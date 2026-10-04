@@ -2,10 +2,12 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(SettingsStore.self) private var store
+    @Environment(RemoteControlService.self) private var remoteControl
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         @Bindable var store = store
+        @Bindable var remoteControl = remoteControl
 
         Form {
             Section {
@@ -103,6 +105,17 @@ struct SettingsView: View {
             }
 
             Section {
+                Toggle("Apple Watch Remote", isOn: $remoteControl.isEnabled)
+                if remoteControl.isEnabled {
+                    LabeledContent("Status", value: remoteControl.statusDescription)
+                }
+            } header: {
+                Text("Remote Control")
+            } footer: {
+                Text("Control the prompter with the Teleprompter app on your Apple Watch: tap to play or pause, swipe up or down to change speed, swipe left or right to jump, and turn the Digital Crown to scroll. It connects automatically over Bluetooth or Wi-Fi.")
+            }
+
+            Section {
                 Button("Reset to Defaults", role: .destructive) {
                     store.resetToDefaults()
                 }
@@ -180,8 +193,10 @@ private extension Bundle {
 }
 
 #Preview {
+    let store = SettingsStore()
     NavigationStack {
         SettingsView()
     }
-    .environment(SettingsStore())
+    .environment(store)
+    .environment(RemoteControlService(settingsStore: store, activateSession: false))
 }

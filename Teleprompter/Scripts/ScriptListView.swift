@@ -171,7 +171,9 @@ private struct ScriptRow: View {
 }
 
 #Preview {
+    let store = SettingsStore()
     ScriptListView()
-        .environment(SettingsStore())
+        .environment(store)
+        .environment(RemoteControlService(settingsStore: store, activateSession: false))
         .modelContainer(for: Script.self, inMemory: true)
 }

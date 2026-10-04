@@ -95,6 +95,17 @@ final class PrompterController {
         updateProgress()
     }
 
+    /// Scrolls to a fraction (0...1) of the script. Auto-scroll, if running, continues from there.
+    func seek(toFraction fraction: Double) {
+        guard let scrollView else { return }
+        let minY = scrollView.prompterMinOffset
+        let maxY = scrollView.prompterMaxOffset
+        exactOffset = minY + CGFloat(fraction.clamped(to: 0...1)) * (maxY - minY)
+        scrollView.setContentOffset(CGPoint(x: 0, y: exactOffset), animated: false)
+        if state == .finished, exactOffset < maxY - 1 { state = .paused }
+        updateProgress()
+    }
+
     // MARK: - Scroll view callbacks
 
     func userInteractionBegan() {

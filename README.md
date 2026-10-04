@@ -16,6 +16,20 @@ A native SwiftUI teleprompter for iPhone and iPad (iOS 17+).
 - **Keyboard / Bluetooth remote** — Space/Return: play/pause · ↑/↓: speed · ←/→ or Page Up/Down: jump back/forward · R: restart · Esc: close.
 - Screen stays awake while prompting. Portrait and landscape.
 
+### Apple Watch remote
+
+A companion watchOS app (watchOS 10+) controls the prompter over WatchConnectivity, which uses Bluetooth or Wi-Fi automatically, so there's nothing to pair or configure.
+
+| On the watch | Does |
+| --- | --- |
+| Tap ▶︎ (or double-tap/pinch on watchOS 11+) | Play / pause (with the countdown) |
+| Swipe up / down | Faster / slower |
+| Swipe left / right | Jump forward / back |
+| Turn the Digital Crown | Scroll to any point in the script |
+| Mirror button | Toggle horizontal mirroring |
+
+The ring around the play button shows progress through the script. Turn the remote on or off in the iPhone app under **Settings → Remote Control**, which also shows the connection status.
+
 ## Building
 
 Requires Xcode 26+. The `Makefile` points `DEVELOPER_DIR` at `/Applications/Xcode.app`, so it works even if `xcode-select` is set to the Command Line Tools.
@@ -28,12 +42,13 @@ make run     # build, install and launch in the simulator
 make icon    # regenerate the placeholder app icon
 ```
 
-The project uses Xcode's synchronized folders: any file added under `Teleprompter/` or `TeleprompterTests/` is picked up automatically, with no project-file edits needed.
+The project uses Xcode's synchronized folders: any file added under `Teleprompter/`, `TeleprompterWatch/`, `Shared/` (compiled into both apps) or `TeleprompterTests/` is picked up automatically, with no project-file edits needed.
 
-## Running on your iPhone
+## Running on your iPhone and Apple Watch
 
 1. `make open`, select the **Teleprompter** target → *Signing & Capabilities* → choose your Team.
-2. Plug in your iPhone (enable *Developer Mode* in Settings → Privacy & Security), select it as the run destination, and press ⌘R.
+2. Plug in your iPhone (enable *Developer Mode* in Settings → Privacy & Security), select it as the run destination, and press ⌘R. The watch app is embedded in the iPhone app.
+3. For the watch: enable *Developer Mode* on the watch (Settings → Privacy & Security), choose the **TeleprompterWatch** scheme with your watch as the destination, and press ⌘R. The first install onto a real watch can take several minutes.
 
 ## App Store checklist
 

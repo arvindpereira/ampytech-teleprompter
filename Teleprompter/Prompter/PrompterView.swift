@@ -5,6 +5,7 @@ struct PrompterView: View {
     let script: Script
 
     @Environment(SettingsStore.self) private var store
+    @Environment(RemoteControlService.self) private var remoteControl
     @Environment(\.dismiss) private var dismiss
     @State private var controller = PrompterController()
     @State private var showControls = true
@@ -103,9 +104,11 @@ struct PrompterView: View {
         .onAppear {
             isFocused = true
             UIApplication.shared.isIdleTimerDisabled = true
+            remoteControl.attach(controller, scriptTitle: script.displayTitle)
         }
         .onDisappear {
             controller.pause()
+            remoteControl.detach(controller)
             hideControlsTask?.cancel()
             UIApplication.shared.isIdleTimerDisabled = false
         }
